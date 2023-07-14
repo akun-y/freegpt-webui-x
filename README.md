@@ -103,7 +103,7 @@ docker pull ramonvc/freegpt-webui
 
 Run the application using Docker:
 ```
-docker run -p 1338:1338 yinhhk/freegpt-webui-x
+docker run -p 1338:1338 yinghk/freegpt-webui-x:v0.0.2
 ```
 
 Access the application in your browser using the URL:
