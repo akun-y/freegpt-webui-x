@@ -16,6 +16,7 @@ from .Providers import (
     GetGpt,
     Gravityengine,
     H2o,
+    Gpt4all,
     hteyun,
     Liaobots,
     Lockchat,

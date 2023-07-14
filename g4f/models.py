@@ -167,7 +167,10 @@ class Model:
         name: str = 'falcon-40b'
         base_provider: str = 'huggingface'
         best_provider: Provider.Provider = Provider.H2o
-    
+    class falcon_40b:
+        name: str = 'gtp4all-7b'
+        base_provider: str = 'huggingface'
+        best_provider: Provider.Provider = Provider.Gpt4all
     class falcon_7b:
         name: str = 'falcon-7b'
         base_provider: str = 'huggingface'
@@ -177,7 +180,10 @@ class Model:
         name: str = 'llama-13b'
         base_provider: str = 'huggingface'
         best_provider: Provider.Provider = Provider.H2o
-    
+    class gpt4all_7b:
+        name: str = 'gpt4all-7b'
+        base_provider: str = 'huggingface'
+        best_provider: Provider.Provider = Provider.Gpt4all
 class ModelUtils:
     convert: dict = {
         'gpt-3.5-turbo': Model.gpt_35_turbo,
@@ -228,4 +234,7 @@ class ModelUtils:
         'falcon-40b': Model.falcon_40b,
         'falcon-7b': Model.falcon_7b,
         'llama-13b': Model.llama_13b,
+        
+        'gpt4all':Model.gpt4all_7b,
+        'gpt4all-7b':Model.gpt4all_7b
     }
