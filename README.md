@@ -62,7 +62,7 @@ To get started with this project, you'll need to clone the repository and have [
 Run the following command to clone the repository:  
 
 ```
-git clone https://github.com/ramonvc/freegpt-webui.git
+git clone https://github.com/akun-y/freegpt-webui.git
 ```
 
 ### Install Dependencies :wrench: 
@@ -103,7 +103,7 @@ docker pull ramonvc/freegpt-webui
 
 Run the application using Docker:
 ```
-docker run -p 1338:1338 ramonvc/freegpt-webui
+docker run -p 1338:1338 yinhhk/freegpt-webui-x
 ```
 
 Access the application in your browser using the URL:
