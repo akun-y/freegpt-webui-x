@@ -1,6 +1,7 @@
 import re
 import time
 import g4f
+import langid
 from g4f import ChatCompletion
 from googletrans import Translator
 from flask import request, Response, stream_with_context
@@ -23,7 +24,7 @@ class Backend_Api:
                 'methods': ['POST']
             }
         }
-        
+
     def _conversation(self):
         """
         Handles the conversation route.
@@ -114,16 +115,16 @@ def fetch_search_results(query):
     :param query: Search query string
     :return: List of search results
     """
-    search = get('https://ddg-api.herokuapp.com/search',
-                 params={
-                     'query': query,
-                     'limit': 3,
-                 })
+    # search = get('https://ddg-api.herokuapp.com/search',
+    #              params={
+    #                  'query': query,
+    #                  'limit': 3,
+    #              })
 
     snippets = ""
-    for index, result in enumerate(search.json()):
-        snippet = f'[{index + 1}] "{result["snippet"]}" URL:{result["link"]}.'
-        snippets += snippet
+    # for index, result in enumerate(search.json()):
+    #     snippet = f'[{index + 1}] "{result["snippet"]}" URL:{result["link"]}.'
+    #     snippets += snippet
     return [{'role': 'system', 'content': snippets}]
 
 
@@ -182,8 +183,13 @@ def set_response_language(prompt):
     translator = Translator()
     max_chars = 256
     content_sample = prompt['content'][:max_chars]
-    detected_language = translator.detect(content_sample).lang
-    return f"You will respond in the language: {detected_language}. "
+    lineTuple = langid.classify(content_sample)
+    detected_language = lineTuple[0]
+    #detected_language = translator.detect(content_sample).lang
+    # return f"You will respond in the language: {detected_language}. "
+    msg = f"You will respond in the language: {detected_language}. "
+    print(msg)
+    return msg
 
 
 def getJailbreak(jailbreak):
