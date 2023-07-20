@@ -70,11 +70,7 @@ To get started with this project, you'll need to clone the repository and have [
 Run the following command to clone the repository:
 
 ```
-<<<<<<< HEAD
 git clone https://github.com/akun-y/freegpt-webui-x.git
-=======
-git clone https://github.com/akun-y/freegpt-webui.git
->>>>>>> fcf6d3bfc83cbee0686d6dec998fbe7ff732fdb7
 ```
 
 ### Install Dependencies :wrench:
@@ -128,11 +124,7 @@ docker pull yinghk/freegpt-webui-x
 Run the application using Docker:
 
 ```
-<<<<<<< HEAD
 docker run -p 1338:1338 yinghk/freegpt-webui-x
-=======
-docker run -p 1338:1338 yinhhk/freegpt-webui-x
->>>>>>> fcf6d3bfc83cbee0686d6dec998fbe7ff732fdb7
 ```
 
 Access the application in your browser using the URL:
