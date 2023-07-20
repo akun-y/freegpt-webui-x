@@ -124,7 +124,7 @@ docker pull yinghk/freegpt-webui-x
 Run the application using Docker:
 
 ```
-docker run -p 1338:1338 yinghk/freegpt-webui-x
+docker run -p 1338:1338 yinghk/freegpt-webui-x:v0.0.2
 ```
 
 Access the application in your browser using the URL:
