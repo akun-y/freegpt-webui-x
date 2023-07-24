@@ -1,3 +1,4 @@
+import logging
 import requests
 import os
 import json
@@ -8,9 +9,14 @@ model = ['gpt-3.5-turbo-16k', 'gpt-3.5-turbo-0613']
 supports_stream = True
 needs_auth = False
 
+
 def _create_completion(model: str, messages: list, stream: bool, temperature: float = 0.7, **kwargs):
+    config = json.load(open('config.json', 'r'))
+    password = config['gravityengine_password']
+
     headers = {
         'Content-Type': 'application/json',
+        'Authorization': f'Bearer ak-{password}',
     }
     data = {
         'model': model,
@@ -18,10 +24,16 @@ def _create_completion(model: str, messages: list, stream: bool, temperature: fl
         'presence_penalty': 0,
         'messages': messages,
     }
-    response = requests.post(url + '/api/openai/v1/chat/completions',
+    response = requests.post(url + '/api/openai/v1/chat/completions', headers=headers,
                              json=data, stream=True)
-    
+    if not response.ok:
+        error_msg = "response is empty"
+        print("===>conversation completion error:" +
+              response.reason + " - " + response.text)
+
     yield response.json()['choices'][0]['message']['content']
 
+
 params = f'g4f.Providers.{os.path.basename(__file__)[:-3]} supports: ' + \
-    '(%s)' % ', '.join([f"{name}: {get_type_hints(_create_completion)[name].__name__}" for name in _create_completion.__code__.co_varnames[:_create_completion.__code__.co_argcount]])
+    '(%s)' % ', '.join(
+        [f"{name}: {get_type_hints(_create_completion)[name].__name__}" for name in _create_completion.__code__.co_varnames[:_create_completion.__code__.co_argcount]])

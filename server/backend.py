@@ -4,12 +4,14 @@ import g4f
 import langid
 from g4f import ChatCompletion
 from googletrans import Translator
-from flask import request, Response, stream_with_context
+from flask import app, request, Response, stream_with_context
 from datetime import datetime
 from requests import get
 from server.config import special_instructions
+from flask import current_app
+import logging
 
-
+logger = logging.getLogger('backend')
 class Backend_Api:
     def __init__(self, bp, config: dict) -> None:
         """
@@ -26,6 +28,7 @@ class Backend_Api:
         }
 
     def _conversation(self):
+        global logger
         """
         Handles the conversation route.
 
@@ -41,6 +44,7 @@ class Backend_Api:
                 model = request.json['model']
                 messages = build_messages(jailbreak)
 
+                logger.info('_conversation messages:%s', messages)
                 # Generate response
                 response = ChatCompletion.create(
                     model=model,
@@ -48,8 +52,8 @@ class Backend_Api:
                     chatId=conversation_id,
                     messages=messages
                 )
-
-                return Response(stream_with_context(generate_stream(response, jailbreak)), mimetype='text/event-stream')
+                stream_ret = generate_stream(response, jailbreak)
+                return Response(stream_with_context(stream_ret), mimetype='text/event-stream')
 
             except Exception as e:
                 print(e)

@@ -1,3 +1,5 @@
+# encoding:utf-8
+
 from requests import Session
 from uuid import uuid4
 from json import loads
@@ -6,6 +8,7 @@ import json
 import requests
 from ...typing import sha256, Dict, get_type_hints
 from gpt4all import GPT4All
+
 
 url = 'https://gpt-gm.h2o.ai'
 model = ['gpt4all-7b']
@@ -20,51 +23,62 @@ models = {
 }
 
 gpt4allModel = GPT4All(
-        # model_name="wizardLM-13B-Uncensored.ggmlv3.q4_0",
-        # model_name="orca-mini-13b.ggmlv3.q4_0",
-        # model_name="GPT4All-13B-snoozy.ggmlv3.q4_0",
-        # model_name="nous-hermes-13b.ggmlv3.q4_0",
-         model_name="ggml-gpt4all-j-v1.3-groovy.bin",
-        # model_name="orca-mini-7b.ggmlv3.q4_0.bin",
-        # model_name='orca-mini-3b.ggmlv3.q4_0.bin',
-        # model_path='/mnt/k/tmp/GPT4All-models',
-        model_path='K:/dev/AI/GPT4All-models',
-        allow_download=False)
+    # model_name="wizardLM-13B-Uncensored.ggmlv3.q4_0",
+    # model_name="orca-mini-13b.ggmlv3.q4_0",
+    # model_name="GPT4All-13B-snoozy.ggmlv3.q4_0",
+    # model_name="nous-hermes-13b.ggmlv3.q4_0",
+    model_name="ggml-gpt4all-j-v1.3-groovy.bin",
+    # model_name="orca-mini-7b.ggmlv3.q4_0.bin",
+    # model_name='orca-mini-3b.ggmlv3.q4_0.bin',
+    # model_path='/mnt/k/tmp/GPT4All-models',
+    model_path='M:\dev\AI\GPT4All-models',
+    allow_download=True)
+
+
 def _create_completion(model: str, messages: list, stream: bool, **kwargs):
-    global gpt4allModel 
-    conversation = ''
-    #conversation = 'instruction: this is a conversation beween, a user and an AI assistant, respond to the latest message, referring to the conversation if needed\n'
+    global gpt4allModel
+
+    prompt = ""
+    conversation = []
     for message in messages:
-        conversation += '%s: %s\n' % (message['role'], message['content'])
-    conversation += 'assistant:'
+        print("message:", message)
+        conversation.append(
+            {"role": message['role'], "content": message['content']})
+        #prompt += '%s: %s\n' % (message['role'], message['content'])
+        prompt = '%s: %s\n' % (message['role'], message['content'])
 
-    # gpt4allModel = GPT4All(
-    #     #model_name="wizardLM-13B-Uncensored.ggmlv3.q4_0",
-    #     # model_name="orca-mini-13b.ggmlv3.q4_0",
-    #     model_name="GPT4All-13B-snoozy.ggmlv3.q4_0",
-    #     # model_name="nous-hermes-13b.ggmlv3.q4_0",
-    #     #model_name="nous-hermes-13b.ggmlv3.q4_0.bin",
-    #     #model_name="ggml-gpt4all-j-v1.3-groovy.bin",
-    #     # model_name="ggml-model-gpt4all-falcon-q4_0.bin",
-    #     #model_name="orca-mini-7b.ggmlv3.q4_0.bin",
-    #     #model_name='orca-mini-3b.ggmlv3.q4_0.bin',
-    #     #model_path='/mnt/k/tmp/GPT4All-models',
-    #     model_path='K:/dev/AI/GPT4All-models',
-    #     allow_download=False)
+    print("Prompt: " + prompt)
+    # with gpt4allModel.chat_session():
+    #     for message in messages:
+    #         response = gpt4allModel.generate(prompt=message['content'],  top_k=1)
+    #         print("----------------------------")
+    #         print(response)
+    #         print(gpt4allModel.current_chat_session)
 
-    output = gpt4allModel.generate(message['content'],max_tokens=30)
-    print("GPT4ALL output:",output)
+    response_tokens = ''
 
-    conversationId ="234234"
+    # for token in gpt4allModel.generate(prompt,max_tokens=30, streaming=True):
+    #     response_tokens.append( token)
+    #     print("token:",token)
+    for token in gpt4allModel.generate(prompt, max_tokens=30, streaming=True):
+        #print("token:", token.encode('utf-8').decode('utf-8'))
+        # print(token.decode('utf-8',errors='ignore'))
+        response_tokens += token
+        yield (token)
 
-    if not output or len(output) == 0:
-        error_msg = "response is empty"
-        print("conversation completion error:"+error_msg)
-        error = {'error':error_msg}
-        yield error
-        return
-    token  = output;
-    yield token
+    print(response_tokens)
+    # print(response_tokens.decode('utf-8',errors='replace'))
+    # print("Response: " + response_tokens)
+    # conversationId = "234234"
+
+    # if not output or len(output) == 0:
+    #     error_msg = "response is empty"
+    #     print("conversation completion error:"+error_msg)
+    #     error = {'error':error_msg}
+    #     yield error
+    #     return
+    # token  = output;
+    # yield token
     # for line in completion.iter_lines():
     #     if b'data' in line:
     #         line = loads(line.decode('utf-8').replace('data:', ''))
