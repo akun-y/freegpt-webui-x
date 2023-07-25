@@ -31,6 +31,7 @@ gpt4allModel = GPT4All(
     # model_name="orca-mini-7b.ggmlv3.q4_0.bin",
     # model_name='orca-mini-3b.ggmlv3.q4_0.bin',
     # model_path='/mnt/k/tmp/GPT4All-models',
+    # model_path='/www/cosfs/gpt/models',
     model_path='M:\dev\AI\GPT4All-models',
     allow_download=True)
 

@@ -4,8 +4,8 @@ from server.backend import Backend_Api
 from json import load
 from flask import Flask
 
-if __name__ == '__main__':
-
+def app(environ, start_response):
+    print("start...")
     # Load configuration from config.json
     config = load(open('config.json', 'r'))
     site_config = config['site_config']
@@ -35,7 +35,5 @@ if __name__ == '__main__':
 
     # Run the Flask server
     print(f"Running on {site_config['port']}{url_prefix}")
-    # app.run(**site_config)
-    from waitress import serve
-    serve(app, host="0.0.0.0", port=8080)
+    app.run(**site_config)
     print(f"Closing port {site_config['port']}")
