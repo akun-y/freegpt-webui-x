@@ -25,4 +25,4 @@ PyExecJS
 browser_cookie3
 googletrans==4.0.0rc1
 langid
-gpt4all
+gpt4all==0.2.3
