@@ -2,7 +2,11 @@ import json
 from gpt4all import GPT4All
 import sys
 
-model = GPT4All('ggml-mpt-7b-chat')
+#model = GPT4All('ggml-mpt-7b-chat')
+#model = GPT4All('orca-mini-3b.ggmlv3.q4_0')
+
+
+model = GPT4All('gpt4all-lora-quantized')
 message = "hello" #sys.argv[1]
 messages = []
 print( "Prompt: " + message )
