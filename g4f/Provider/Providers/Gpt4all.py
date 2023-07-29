@@ -6,6 +6,8 @@ from json import loads
 import os
 import json
 import requests
+
+from server.logger import init_logger
 from ...typing import sha256, Dict, get_type_hints
 from gpt4all import GPT4All
 
@@ -23,10 +25,8 @@ models = {
 }
 #---------------------------------------------
 #gpt4all
-config = json.load(open('config.json', 'r'))
-model_path = config['model_path']
-print("model_path:", model_path)
 
+logger = init_logger('gpt4all')
 gpt4allModel = GPT4All(
     # model_name="wizardLM-13B-Uncensored.ggmlv3.q4_0",
     # model_name="orca-mini-13b.ggmlv3.q4_0",
@@ -43,18 +43,16 @@ gpt4allModel = GPT4All(
 
 
 def _create_completion(model: str, messages: list, stream: bool, **kwargs):
-    global gpt4allModel
+    global gpt4allModel,logger
 
     prompt = ""
     conversation = []
     for message in messages:
-        print("message:", message)
         conversation.append(
             {"role": message['role'], "content": message['content']})
         #prompt += '%s: %s\n' % (message['role'], message['content'])
         prompt = '%s: %s\n' % (message['role'], message['content'])
 
-    print("Prompt: " + prompt)
     # with gpt4allModel.chat_session():
     #     for message in messages:
     #         response = gpt4allModel.generate(prompt=message['content'],  top_k=1)
@@ -73,7 +71,7 @@ def _create_completion(model: str, messages: list, stream: bool, **kwargs):
         response_tokens += token
         yield (token)
 
-    print(response_tokens)
+    logger.info("gpt4all response:%s",response_tokens)
     # print(response_tokens.decode('utf-8',errors='replace'))
     # print("Response: " + response_tokens)
     # conversationId = "234234"

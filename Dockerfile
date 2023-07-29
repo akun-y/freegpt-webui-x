@@ -1,26 +1,30 @@
-# Build stage
-FROM python:3.10-buster AS build
+# 基于Ubuntu镜像构建
+FROM ubuntu:20.04 AS build
+
+#替换为阿里源
+RUN sed -i 's#http://archive.ubuntu.com/#http://mirrors.aliyun.com/#' /etc/apt/sources.list \
+    && sed -i 's#http://security.ubuntu.com/#http://mirrors.aliyun.com/#' /etc/apt/sources.list
+
+RUN apt-get update
+RUN apt-get install -y python3 python3-pip
 
 WORKDIR /app
 
-COPY requirements.txt requirements.txt
+COPY requirements.txt ./
 
-RUN apt-get update && \
-  apt-get install -y --no-install-recommends build-essential libffi-dev cmake libcurl4-openssl-dev python3-dev gcc libc-dev libstdc++6 && \
-  pip3 install --user --no-cache-dir -r requirements.txt
+RUN pip3 install --user --no-cache-dir -r requirements.txt \
+    && apt-get clean \
+    && rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
 
+FROM build AS prod
+WORKDIR /app
+# COPY client ./client
+# COPY g4f ./g4f
+# COPY server ./server
+# COPY run.py ./
+# 使用.dockerignore
+COPY . ./
 
-COPY . .
+EXPOSE 1338/tcp
 
-CMD ["python3", "./run.py"]
-# Production stage
-# FROM python:3.10-slim-buster AS production
-
-# WORKDIR /app
-
-# COPY --from=build /root/.local /root/.local
-# COPY . .
-
-# ENV PATH=/root/.local/bin:$PATH
-
-# CMD ["python3", "./run.py"]
+CMD [ "python3", "run.py" ]

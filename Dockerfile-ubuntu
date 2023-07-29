@@ -18,6 +18,6 @@ RUN pip3 install --user --no-cache-dir -r requirements.txt \
 
 FROM build AS production
 WORKDIR /app
-COPY . .
+COPY client g4f server run.py .
 
 CMD [ "python3", "run.py" ]

@@ -34,19 +34,27 @@ Please note that the choice and integration of additional Providers are the user
 
 ## Table of Contents
 
-- [To-Do List](#to-do-list-%EF%B8%8F)
-- [Getting Started](#getting-started-white_check_mark)
-  - [Cloning the Repository](#cloning-the-repository-inbox_tray)
-  - [Install Dependencies](#install-dependencies-wrench)
-- [Running the Application](#running-the-application-rocket)
-- [Docker](#docker-)
-  - [Prerequisites](#prerequisites)
-  - [Running the Docker](#running-the-docker)
-- [Incorporated Projects](#incorporated-projects-busts_in_silhouette)
-  - [WebUI](#webui)
-  - [API FreeGPT](#api-g4f)
-- [Star History](#star-history)
-- [Legal Notice](#legal-notice)
+- [FreeGPT WebUI](#freegpt-webui)
+  - [GPT 3.5/4](#gpt-354)
+  - [Known bugs 🚧](#known-bugs-)
+  - [News 📢](#news-)
+  - [Note ℹ️](#note-ℹ️)
+  - [Table of Contents](#table-of-contents)
+  - [](#)
+  - [To-Do List ✔️](#to-do-list-️)
+  - [Getting Started :white\_check\_mark:](#getting-started-white_check_mark)
+    - [Cloning the Repository :inbox\_tray:](#cloning-the-repository-inbox_tray)
+    - [Install Dependencies :wrench:](#install-dependencies-wrench)
+  - [Running the Application :rocket:](#running-the-application-rocket)
+  - [Docker 🐳](#docker-)
+    - [Prerequisites](#prerequisites)
+    - [Running the Docker](#running-the-docker)
+  - [Docker build](#docker-build)
+  - [Incorporated Projects :busts\_in\_silhouette](#incorporated-projects-busts_in_silhouette)
+    - [WebUI](#webui)
+    - [API G4F](#api-g4f)
+  - [Star History](#star-history)
+  - [Legal Notice](#legal-notice)
 
 ##
 
@@ -147,11 +155,15 @@ docker stop <container-id>
 
 ## Docker build
 
-1. docker build -t ***/freegpt-webui-x:v0.0.2 .
+1. docker build -t yinghk/freegpt-webui-x:v0.0.4 -t yinghk/freegpt-webui-x:latest .
 2. docker login
-3. docker push ***/freegpt-webui-x:v0.0.2
+3. docker push yinghk/freegpt-webui-x
 
-## Incorporated Projects :busts_in_silhouette:
+```
+docker-compose -f docker-compose-image.yml up -d
+```
+
+## Incorporated Projects :busts_in_silhouette
 
 I highly recommend visiting and supporting both projects.
 

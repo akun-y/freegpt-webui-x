@@ -11,7 +11,9 @@ from server.config import special_instructions
 from flask import current_app
 import logging
 
-logger = logging.getLogger('backend')
+from server.logger import init_logger
+
+logger = init_logger("backend")
 class Backend_Api:
     def __init__(self, bp, config: dict) -> None:
         """
@@ -56,8 +58,8 @@ class Backend_Api:
                 return Response(stream_with_context(stream_ret), mimetype='text/event-stream')
 
             except Exception as e:
-                print(e)
-                print(e.__traceback__.tb_next)
+                logger.error(e)
+                logger.error(e.__traceback__.tb_next)
 
                 retries += 1
                 if retries >= max_retries:
@@ -192,7 +194,7 @@ def set_response_language(prompt):
     #detected_language = translator.detect(content_sample).lang
     # return f"You will respond in the language: {detected_language}. "
     msg = f"You will respond in the language: {detected_language}. "
-    print(msg)
+    logger.info(msg)
     return msg
 
 
