@@ -35,7 +35,9 @@ if __name__ == '__main__':
 
     # Run the Flask server
     print(f"Running on {site_config['port']}{url_prefix}")
-    # app.run(**site_config)
-    from waitress import serve
-    serve(app, host="0.0.0.0", port=8080)
-    print(f"Closing port {site_config['port']}")
+    if(config['debug']):
+        app.run(**site_config)
+    else :
+        from waitress import serve
+        serve(app, **site_config)
+        print(f"Closing port {site_config['port']}")

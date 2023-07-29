@@ -21,6 +21,11 @@ models = {
     'falcon-40b': 'h2oai/h2ogpt-gm-oasst1-en-2048-falcon-40b-v1',
     'llama-13b': 'h2oai/h2ogpt-gm-oasst1-en-2048-open-llama-13b'
 }
+#---------------------------------------------
+#gpt4all
+config = json.load(open('config.json', 'r'))
+model_path = config['model_path']
+print("model_path:", model_path)
 
 gpt4allModel = GPT4All(
     # model_name="wizardLM-13B-Uncensored.ggmlv3.q4_0",
@@ -32,7 +37,8 @@ gpt4allModel = GPT4All(
     # model_name='orca-mini-3b.ggmlv3.q4_0.bin',
     # model_path='/mnt/k/tmp/GPT4All-models',
     # model_path='/www/cosfs/gpt/models',
-    model_path='M:\dev\AI\GPT4All-models',
+    # model_path='M:\dev\AI\GPT4All-models',
+    model_path="gpt4all",
     allow_download=True)
 
 

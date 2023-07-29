@@ -37,3 +37,4 @@ def app(environ, start_response):
     print(f"Running on {site_config['port']}{url_prefix}")
     app.run(**site_config)
     print(f"Closing port {site_config['port']}")
+
