@@ -46,7 +46,7 @@ class Backend_Api:
                 model = request.json['model']
                 messages = build_messages(jailbreak)
 
-                logger.info('_conversation messages:%s', messages)
+                logger.info('_conversation %s-%s',conversation_id,messages)
                 # Generate response
                 response = ChatCompletion.create(
                     model=model,
