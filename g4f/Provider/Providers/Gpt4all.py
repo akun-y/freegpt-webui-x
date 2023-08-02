@@ -6,6 +6,7 @@ from json import loads
 import os
 import json
 import requests
+import gpt4all
 
 from server.logger import init_logger
 from ...typing import sha256, Dict, get_type_hints
@@ -33,11 +34,18 @@ model_name = config['gpt4all'].get('model_name')
 model_path = config['gpt4all'].get('model_path')
 debug = config['debug']
 
+print("gpt4all version:")
+print(dir(gpt4all))
+print(gpt4all.__name__)
+print("gpt4all debug:%s", debug)
 # gpt4allModel = GPT4All("wizardlm-13b-v1.1-superhot-8k.ggmlv3.q4_0.bin")
 if debug:
-    gpt4allModel = GPT4All(model_name=model_name, model_path=model_path)
-else:
     gpt4allModel = GPT4All("ggml-gpt4all-j-v1.3-groovy")
+else:
+    print("--------")
+    print("gpt4all model_name:%s", model_name)
+    print("gpt4all model_path:%s", model_path)
+    gpt4allModel = GPT4All(model_name=model_name, model_path=model_path,allow_download=False)
 
 
 # gpt4allModel = GPT4All(

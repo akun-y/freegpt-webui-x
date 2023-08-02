@@ -1,0 +1,15 @@
+version: '3.5'
+
+services:
+  freegpt-webui:
+    container_name: freegpt-webui-x
+    build:
+      context: .
+      dockerfile: Dockerfile
+      #dockerfile: Dockerfile-ubuntu
+    ports:
+      - "1338:1338"
+    volumes:
+      - /Users/yhk/.cache/gpt4all:/app/gpt4all
+      #- ./gpt4all:/app/gpt4all
+      - ./config-macos.json:/app/config.json

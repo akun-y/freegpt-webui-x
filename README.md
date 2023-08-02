@@ -134,6 +134,11 @@ Run the application using Docker:
 ```
 docker run -p 1338:1338 yinghk/freegpt-webui-x:v0.0.2
 ```
+for macos m1:
+
+```
+docker run -p 1338:1338 --platform linux/amd64 -v /Users/yhk/.cache/gpt4all:/app/gpt4all -v ./config-macos.json:/app/config.json --name=iKonwMGPT yinghk/freegpt-webui-x:latest
+```
 
 Access the application in your browser using the URL:
 
@@ -155,7 +160,7 @@ docker stop <container-id>
 
 ## Docker build
 
-1. docker build -t yinghk/freegpt-webui-x:v0.0.4 -t yinghk/freegpt-webui-x:latest .
+1. docker build -t yinghk/freegpt-webui-x:v0.0.5 -t yinghk/freegpt-webui-x:latest .
 2. docker login
 3. docker push yinghk/freegpt-webui-x
 
