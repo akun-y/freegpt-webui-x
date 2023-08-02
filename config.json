@@ -3,6 +3,10 @@
 		"host": "0.0.0.0",
 		"port": 1338
 	},
+	"gpt4all": {
+		"model_name": "wizardLM-13B-Uncensored.ggmlv3.q4_0",
+		"model_path": "/mnt/k/tmp/GPT4All-models"
+	},
 	"debug": false,
 	"url_prefix": "",
 	"gravityengine_password": "chatgptorguk"

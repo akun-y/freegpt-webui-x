@@ -83,7 +83,7 @@ def build_messages(jailbreak):
     prompt = request.json['meta']['content']['parts'][0]
 
     # Generate system message
-    current_date = datetime.now().strftime("%Y-%m-%d")
+    current_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     system_message = (
         f'You are ChatGPT also known as ChatGPT, a large language model trained by OpenAI. '
         f'Strictly follow the users instructions. '

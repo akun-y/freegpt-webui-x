@@ -18,39 +18,65 @@ supports_stream = True
 needs_auth = False
 
 models = {
-    'gpt4all-7b': 'h2oai/h2ogpt-gm-oasst1-en-2048-falcon-7b-v3',
-    'falcon-7b': 'h2oai/h2ogpt-gm-oasst1-en-2048-falcon-7b-v3',
-    'falcon-40b': 'h2oai/h2ogpt-gm-oasst1-en-2048-falcon-40b-v1',
-    'llama-13b': 'h2oai/h2ogpt-gm-oasst1-en-2048-open-llama-13b'
+    'Wizard 7B': "wizardLM-13B-Uncensored.ggmlv3.q4_0.bin",
+    'Wizard 13B': "wizardlm-13b-v1.1-superhot-8k.ggmlv3.q4_0.bin",
+    "Nous-Hermes": "nous-hermes-13b.ggmlv3.q4_0.bin",
+    "gpt4all-7b": "ggml-gpt4all-j-v1.3-groovy.bin",
 }
-#---------------------------------------------
-#gpt4all
+
+# ---------------------------------------------
+# gpt4all
 
 logger = init_logger('gpt4all')
-gpt4allModel = GPT4All(
-    # model_name="wizardLM-13B-Uncensored.ggmlv3.q4_0",
-    # model_name="orca-mini-13b.ggmlv3.q4_0",
-    # model_name="GPT4All-13B-snoozy.ggmlv3.q4_0",
-    # model_name="nous-hermes-13b.ggmlv3.q4_0",
-    model_name="ggml-gpt4all-j-v1.3-groovy.bin",
-    # model_name="orca-mini-7b.ggmlv3.q4_0.bin",
-    # model_name='orca-mini-3b.ggmlv3.q4_0.bin',
-    # model_path='/mnt/k/tmp/GPT4All-models',
-    # model_path='/www/cosfs/gpt/models',
-    model_path='M:\dev\AI\GPT4All-models',
-    #model_path="gpt4all",
-    allow_download=False)
+config = json.load(open('config.json', 'r'))
+model_name = config['gpt4all'].get('model_name')
+model_path = config['gpt4all'].get('model_path')
+debug = config['debug']
 
+# gpt4allModel = GPT4All("wizardlm-13b-v1.1-superhot-8k.ggmlv3.q4_0.bin")
+if debug:
+    gpt4allModel = GPT4All(model_name=model_name, model_path=model_path)
+else:
+    gpt4allModel = GPT4All("ggml-gpt4all-j-v1.3-groovy")
+
+
+# gpt4allModel = GPT4All(
+#     model_name="wizardLM-13B-Uncensored.ggmlv3.q4_0",
+#     # model_name="orca-mini-13b.ggmlv3.q4_0",
+#     # model_name="GPT4All-13B-snoozy.ggmlv3.q4_0",
+#     # model_name="nous-hermes-13b.ggmlv3.q4_0",
+#     #model_name="ggml-gpt4all-j-v1.3-groovy.bin",
+#     # model_name="orca-mini-7b.ggmlv3.q4_0.bin",
+#     # model_name='orca-mini-3b.ggmlv3.q4_0.bin',
+#     # model_path='/mnt/k/tmp/GPT4All-models',
+#     # model_path='/www/cosfs/gpt/models',
+#     #model_path='M:\dev\AI\GPT4All-models',
+#     model_path='/Users/yhk/.cache/gpt4all',
+#     #model_path="gpt4all",
+#     allow_download=False)
 
 def _create_completion(model: str, messages: list, stream: bool, **kwargs):
-    global gpt4allModel,logger
+    global logger, gpt4allModel
+
+    logger.info("_create_completion model:%s", model)
+    # 0.2.3
+    # gpt4allModel = GPT4All(models[model])
+    # 1.0.8
+#    gpt4allModel = GPT4All(
+#     model_name="wizardLM-13B-Uncensored.ggmlv3.q4_0",
+#     # model_path='/mnt/k/tmp/GPT4All-models',
+#     # model_path='/www/cosfs/gpt/models',
+#     #model_path='M:\dev\AI\GPT4All-models',
+#     model_path='/Users/yhk/.cache/gpt4all',
+#     #model_path="gpt4all",
+#     allow_download=False)
 
     prompt = ""
     conversation = []
     for message in messages:
         conversation.append(
             {"role": message['role'], "content": message['content']})
-        #prompt += '%s: %s\n' % (message['role'], message['content'])
+        # prompt += '%s: %s\n' % (message['role'], message['content'])
         prompt = '%s: %s\n' % (message['role'], message['content'])
 
     # with gpt4allModel.chat_session():
@@ -65,13 +91,16 @@ def _create_completion(model: str, messages: list, stream: bool, **kwargs):
     # for token in gpt4allModel.generate(prompt,max_tokens=30, streaming=True):
     #     response_tokens.append( token)
     #     print("token:",token)
-    for token in gpt4allModel.generate(prompt, max_tokens=30, streaming=True):
-        #print("token:", token.encode('utf-8').decode('utf-8'))
+    # 0.2.3
+    for token in gpt4allModel.generate(prompt, streaming=True):
+        # 1.0.8
+        # for token in gpt4allModel.generate(prompt, max_tokens=30, streaming=True):
+        # print("token:", token.encode('utf-8').decode('utf-8'))
         # print(token.decode('utf-8',errors='ignore'))
         response_tokens += token
         yield (token)
 
-    logger.info("gpt4all response:%s",response_tokens)
+    logger.info("gpt4all response:%s", response_tokens)
     # print(response_tokens.decode('utf-8',errors='replace'))
     # print("Response: " + response_tokens)
     # conversationId = "234234"
