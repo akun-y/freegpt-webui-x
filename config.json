@@ -5,7 +5,7 @@
 	},
 	"gpt4all": {
 		"model_name": "wizardLM-13B-Uncensored.ggmlv3.q4_0",
-		"model_path": "/Users/yhk/.cache/gpt4all"
+		"model_path": "M:/dev/AI/GPT4All-models"
 	},
 	"debug": false,
 	"url_prefix": "",
