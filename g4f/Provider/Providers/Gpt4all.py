@@ -28,12 +28,15 @@ models = {
 
 logger = init_logger('gpt4all')
 gpt4allModel = GPT4All(
-    # model_name="wizardLM-13B-Uncensored.ggmlv3.q4_0",
+    model_name="wizardLM-13B-Uncensored.ggmlv3.q4_0",
+    # model_name="wizardlm-13b-v1.1-superhot-8k.ggmlv3.q4_0",
     # model_name="orca-mini-13b.ggmlv3.q4_0",
     # model_name="GPT4All-13B-snoozy.ggmlv3.q4_0",
     # model_name="nous-hermes-13b.ggmlv3.q4_0",
-    model_name="ggml-gpt4all-j-v1.3-groovy.bin",
+    # model_name="ggml-gpt4all-j-v1.3-groovy.bin",
     # model_name="orca-mini-7b.ggmlv3.q4_0.bin",
+    # model_name="orca-mini-13b.ggmlv3.q4_0",
+    # model_name="llama-2-7b-chat.ggmlv3.q4_0",
     # model_name='orca-mini-3b.ggmlv3.q4_0.bin',
     # model_path='/mnt/k/tmp/GPT4All-models',
     # model_path='/www/cosfs/gpt/models',
@@ -51,7 +54,8 @@ def _create_completion(model: str, messages: list, stream: bool, **kwargs):
         conversation.append(
             {"role": message['role'], "content": message['content']})
         #prompt += '%s: %s\n' % (message['role'], message['content'])
-        prompt = '%s: %s\n' % (message['role'], message['content'])
+        #prompt = '%s: %s\n' % (message['role'], message['content'])
+        prompt = message['content']
 
     # with gpt4allModel.chat_session():
     #     for message in messages:
@@ -65,7 +69,8 @@ def _create_completion(model: str, messages: list, stream: bool, **kwargs):
     # for token in gpt4allModel.generate(prompt,max_tokens=30, streaming=True):
     #     response_tokens.append( token)
     #     print("token:",token)
-    for token in gpt4allModel.generate(prompt, max_tokens=30, streaming=True):
+    for token in gpt4allModel.generate(prompt, max_tokens=90, streaming=True,
+                                       ):
         #print("token:", token.encode('utf-8').decode('utf-8'))
         # print(token.decode('utf-8',errors='ignore'))
         response_tokens += token
