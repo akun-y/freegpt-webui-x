@@ -56,16 +56,16 @@ class Client:
         self.session.headers.update(self.headers)
 
     def get_token(self):
-            b64 = self.session.get('https://sdk.vercel.ai/openai.jpeg').text
-            data = json.loads(base64.b64decode(b64))
+        b64 = self.session.get('https://sdk.vercel.ai/openai.jpeg').text
+        data = json.loads(base64.b64decode(b64))
 
-            code = 'const globalThis = {data: `sentinel`}; function token() {return (%s)(%s)}' % (
-                data['c'], data['a'])
+        code = 'const globalThis = {data: `sentinel`}; function token() {return (%s)(%s)}' % (
+            data['c'], data['a'])
 
-            token_string = json.dumps(separators=(',', ':'),
-                                    obj={'r': execjs.compile(code).call('token'), 't': data['t']})
+        token_string = json.dumps(separators=(',', ':'),
+                                  obj={'r': execjs.compile(code).call('token'), 't': data['t']})
 
-            return base64.b64encode(token_string.encode()).decode()
+        return base64.b64encode(token_string.encode()).decode()
 
     def get_default_params(self, model_id):
         return {key: param['value'] for key, param in vercel_models[model_id]['parameters'].items()}
@@ -142,21 +142,24 @@ class Client:
                     yield json.loads(word)
                 index = len(lines) - 1
 
+
 def _create_completion(model: str, messages: list, stream: bool, **kwargs):
     yield 'Vercel is currently not working.'
     return
-    
+
     conversation = 'This is a conversation between a human and a language model, respond to the last message accordingly, referring to the past history of messages if needed.\n'
-    
+
     for message in messages:
         conversation += '%s: %s\n' % (message['role'], message['content'])
-    
+
     conversation += 'assistant: '
-    
+
     completion = Client().generate(model, conversation)
 
     for token in completion:
         yield token
 
+
 params = f'g4f.Providers.{os.path.basename(__file__)[:-3]} supports: ' + \
-    '(%s)' % ', '.join([f"{name}: {get_type_hints(_create_completion)[name].__name__}" for name in _create_completion.__code__.co_varnames[:_create_completion.__code__.co_argcount]])
+    '(%s)' % ', '.join(
+        [f"{name}: {get_type_hints(_create_completion)[name].__name__}" for name in _create_completion.__code__.co_varnames[:_create_completion.__code__.co_argcount]])

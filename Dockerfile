@@ -1,5 +1,5 @@
 # 基于Ubuntu镜像构建
-FROM ubuntu:20.04 AS build
+FROM  --platform=linux/amd64 ubuntu:20.04 AS build
 
 #替换为阿里源
 RUN sed -i 's#http://archive.ubuntu.com/#http://mirrors.aliyun.com/#' /etc/apt/sources.list \
