@@ -45,7 +45,8 @@ else:
     print("--------")
     print("gpt4all model_name:%s", model_name)
     print("gpt4all model_path:%s", model_path)
-    gpt4allModel = GPT4All(model_name=model_name, model_path=model_path,allow_download=False)
+    gpt4allModel = GPT4All(model_name=model_name,
+                           model_path=model_path, allow_download=False)
 
 
 # gpt4allModel = GPT4All(
@@ -67,69 +68,23 @@ def _create_completion(model: str, messages: list, stream: bool, **kwargs):
     global logger, gpt4allModel
 
     logger.info("_create_completion model:%s", model)
-    # 0.2.3
-    # gpt4allModel = GPT4All(models[model])
-    # 1.0.8
-#    gpt4allModel = GPT4All(
-#     model_name="wizardLM-13B-Uncensored.ggmlv3.q4_0",
-#     # model_path='/mnt/k/tmp/GPT4All-models',
-#     # model_path='/www/cosfs/gpt/models',
-#     #model_path='M:\dev\AI\GPT4All-models',
-#     model_path='/Users/yhk/.cache/gpt4all',
-#     #model_path="gpt4all",
-#     allow_download=False)
 
-    prompt = ""
-    conversation = []
-    for message in messages:
-        conversation.append(
-            {"role": message['role'], "content": message['content']})
-        # prompt += '%s: %s\n' % (message['role'], message['content'])
-        prompt = '%s: %s\n' % (message['role'], message['content'])
+    last_item = messages.pop()
+    prompt = last_item['content']
+    print("gpt4all prompt:", prompt)
 
-    # with gpt4allModel.chat_session():
-    #     for message in messages:
-    #         response = gpt4allModel.generate(prompt=message['content'],  top_k=1)
-    #         print("----------------------------")
-    #         print(response)
-    #         print(gpt4allModel.current_chat_session)
+    with gpt4allModel.chat_session():
+        for message in messages:
+            gpt4allModel.current_chat_session.append(
+                {'role': message['role'], 'content': message['content']})
 
-    response_tokens = ''
+        for token in gpt4allModel.generate(prompt, max_tokens=2048, temp=0.7, 
+                                           top_k=40, top_p=0.4, repeat_penalty=1.18, repeat_last_n=64, n_batch=8, n_predict=None, streaming=True):
+            print(token, end='', flush=True)
+            yield (token)
 
-    # for token in gpt4allModel.generate(prompt,max_tokens=30, streaming=True):
-    #     response_tokens.append( token)
-    #     print("token:",token)
-    # 0.2.3
-    for token in gpt4allModel.generate(prompt, streaming=True):
-        # 1.0.8
-        # for token in gpt4allModel.generate(prompt, max_tokens=30, streaming=True):
-        # print("token:", token.encode('utf-8').decode('utf-8'))
-        # print(token.decode('utf-8',errors='ignore'))
-        response_tokens += token
-        yield (token)
-
-    logger.info("gpt4all response:%s", response_tokens)
-    # print(response_tokens.decode('utf-8',errors='replace'))
-    # print("Response: " + response_tokens)
-    # conversationId = "234234"
-
-    # if not output or len(output) == 0:
-    #     error_msg = "response is empty"
-    #     print("conversation completion error:"+error_msg)
-    #     error = {'error':error_msg}
-    #     yield error
-    #     return
-    # token  = output;
-    # yield token
-    # for line in completion.iter_lines():
-    #     if b'data' in line:
-    #         line = loads(line.decode('utf-8').replace('data:', ''))
-    #         token = line['token']['text']
-
-    #         if token == '<|endoftext|>':
-    #             break
-    #         else:
-    #             yield (token)
+        print("\nResponse: ", json.dumps(
+            gpt4allModel.current_chat_session, indent=4, ensure_ascii=False))
 
 
 params = f'g4f.Providers.{os.path.basename(__file__)[:-3]} supports: ' + \
