@@ -4,7 +4,7 @@
 		"port": 1338
 	},
 	"gpt4all": {
-		"model_name": "wizardLM-13B-Uncensored.ggmlv3.q4_0",
+		"model_name": "ggml-gpt4all-j-v1.3-groovy",
 		"model_path": "/Users/yhk/.cache/gpt4all"
 	},
 	"debug": false,

@@ -85,7 +85,7 @@ def build_messages(jailbreak):
     # Generate system message
     current_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     system_message = (
-        f'You are ChatGPT also known as ChatGPT, a large language model trained by OpenAI. '
+        f'You are iKnowGPT also known as iKnowGPT, a large language model trained by AI. '
         f'Strictly follow the users instructions. '
         f'Knowledge cutoff: 2021-09-01 Current date: {current_date}. '
         f'{set_response_language(prompt)}'
