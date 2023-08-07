@@ -71,20 +71,19 @@ def _create_completion(model: str, messages: list, stream: bool, **kwargs):
 
     last_item = messages.pop()
     prompt = last_item['content']
-    print("gpt4all prompt:", prompt)
+    logger.info("gpt4all prompt:%s", prompt)
 
     with gpt4allModel.chat_session():
         for message in messages:
             gpt4allModel.current_chat_session.append(
                 {'role': message['role'], 'content': message['content']})
-
-        for token in gpt4allModel.generate(prompt, max_tokens=2048, temp=0.7, 
-                                           top_k=40, top_p=0.4, repeat_penalty=1.18, repeat_last_n=64, n_batch=8, n_predict=None, streaming=True):
-            print(token, end='', flush=True)
+        tokens =[]
+        for token in gpt4allModel.generate(prompt,streaming=True):
+            #print(token, end='', flush=True)
+            tokens.append(token)
             yield (token)
-
-        print("\nResponse: ", json.dumps(
-            gpt4allModel.current_chat_session, indent=4, ensure_ascii=False))
+        logger.info("gpt4all response:%s",''.join(tokens))
+        #print("\nResponse: ", json.dumps(gpt4allModel.current_chat_session, indent=4, ensure_ascii=False))
 
 
 params = f'g4f.Providers.{os.path.basename(__file__)[:-3]} supports: ' + \

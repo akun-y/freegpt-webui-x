@@ -4,10 +4,10 @@
 		"port": 1338
 	},
 	"gpt4all": {
-		"model_name": "orca-mini-7b.ggmlv3.q4_0",
-		"model_path": "M:/dev/AI/GPT4All-models"
+		"model_name": "nous-hermes-13b.ggmlv3.q4_0",
+		"model_path": "/app/gpt4all"
 	},
-	"logs_path":"./logs/",
+	"logs_path":"/app/logs/",
 	"debug": false,
 	"url_prefix": "",
 	"gravityengine_password": "chatgptorguk"
