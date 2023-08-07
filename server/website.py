@@ -48,9 +48,9 @@ class Website:
                 基于指令;\
                 由 Nomic AI. 培训;'
             }, {
-                'name': 'GPT-3.5-Turbo-16k-0613',
+                'name': 'gpt-3.5-turbo-16k-0613',
                 'select': False,
-                'value': "gpt-3.5-turbo",
+                'value': "gpt-3.5-turbo-16k-0613",
                 'content': '-GPT3.5 Turbo,Training data as of September 2021'
             },{
                 'name': 'dify.ai',

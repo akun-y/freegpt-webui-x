@@ -10,5 +10,6 @@
 	"logs_path":"./logs/",
 	"debug": false,
 	"url_prefix": "",
-	"gravityengine_password": "chatgptorguk"
+	"gravityengine_password": "chatgptorguk",
+	"dify_ai_apikey": "AszUIqcFIhFlapQ3EpXwV4JJ"
 }

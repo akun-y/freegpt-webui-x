@@ -190,7 +190,10 @@ class Model:
         name: str = 'gpt4all-7b'
         base_provider: str = 'huggingface'
         best_provider: Provider.Provider = Provider.Gpt4all
-
+    class dify_ai:
+        name: str = 'dify-ai'
+        base_provider: str = 'huggingface'
+        best_provider: Provider.Provider = Provider.DifyAI
 
 class ModelUtils:
     convert: dict = {
@@ -244,5 +247,7 @@ class ModelUtils:
         'llama-13b': Model.llama_13b,
 
         'gpt4all': Model.gpt4all_7b,
-        'gpt4all-7b': Model.gpt4all_7b
+        'gpt4all-7b': Model.gpt4all_7b,
+        
+        'dify-ai': Model.dify_ai,
     }
