@@ -1,6 +1,8 @@
+import uuid
 import requests
 import os
 import json
+from g4f.utils import Utils
 
 from server.logger import init_logger
 from ...typing import sha256, Dict, get_type_hints
@@ -22,10 +24,14 @@ needs_auth = False
 logger = init_logger('dify-ai')
 
 
+config = json.load(open('config.json', 'r'))
+apikey = config['dify_ai_apikey']
+conversations = {}
 def _create_completion(model: str, messages: list, stream: bool, temperature: float = 0.7, **kwargs):
-    global logger
-    config = json.load(open('config.json', 'r'))
-    apikey = config['dify_ai_apikey']
+    global logger,apikey,conversations
+    
+    chatId = kwargs.get('chatId')
+    conversation_id = conversations.get(chatId,'')
 
     headers = {
         'Content-Type': 'application/json',
@@ -35,19 +41,19 @@ def _create_completion(model: str, messages: list, stream: bool, temperature: fl
         "inputs": {},
         "query": messages,
         "response_mode": "streaming",  # "blocking",#streaming
-        "user": "abc-123",
-        "conversation_id": ""
+        "user": chatId,
+        "conversation_id": conversation_id
     }
     response = requests.post(url + '/v1/chat-messages', headers=headers,
                              json=data, stream=True)
     if not response.ok:
         error_msg = "response is empty"
         logger.info(
-        f'dify-ai error: {response.status_code} - {response.reason} - {response.text}')
+            f'dify-ai error: {response.status_code} - {response.reason} - {response.text}')
 
     resps = ['dify-ay::']
     if response.status_code == 200:
-        #for chunk in response.iter_content(chunk_size=128):
+        # for chunk in response.iter_content(chunk_size=128):
         for line in response.iter_lines():
             try:
                 line_text = line.decode('utf-8')
@@ -62,7 +68,17 @@ def _create_completion(model: str, messages: list, stream: bool, temperature: fl
 
                 resp = json.loads(data_string)
                 answer = resp.get('answer')
-                #print(answer)
+                conversation_id = resp.get('conversation_id')
+                conversations[chatId] = str(conversation_id)
+
+                # 'event':'message'
+                # 'task_id':'c68363ac-fd2c-45de-8457-626a30b2777c'
+                # 'id':'dc6c7616-d384-4662-8bd1-e8aacc95233c'
+                # 'answer':''
+                # 'created_at':1691457800
+                # 'conversation_id':'a0a6554f-e113-4964-bb24-d97560f1b955'
+
+                # print(answer)
                 resps.append(answer)
                 yield answer
             except:
@@ -70,6 +86,8 @@ def _create_completion(model: str, messages: list, stream: bool, temperature: fl
 
                 # yield line
     logger.info(f'dify-ai resp:{resps}')
+
+
 params = f'g4f.Providers.{os.path.basename(__file__)[:-3]} supports: ' + \
     '(%s)' % ', '.join(
         [f"{name}: {get_type_hints(_create_completion)[name].__name__}" for name in _create_completion.__code__.co_varnames[:_create_completion.__code__.co_argcount]])

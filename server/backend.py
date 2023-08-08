@@ -46,13 +46,14 @@ class Backend_Api:
                 model = request.json['model']
                 messages = build_messages(jailbreak)
 
-                logger.info('_conversation %s-%s',conversation_id,messages)
+                logger.info('_conversation id %s',conversation_id)
                 # Generate response
                 response = ChatCompletion.create(
                     model=model,
                     stream=True,
                     chatId=conversation_id,
-                    messages=messages
+                    messages=messages,
+                    auth=False
                 )
                 stream_ret = generate_stream(response, jailbreak)
                 return Response(stream_with_context(stream_ret), mimetype='text/event-stream')
