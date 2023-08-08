@@ -159,3 +159,5 @@ cython_debug/
 config*.json
 config.json
 user_database.db
+chat_records.db
+*.db

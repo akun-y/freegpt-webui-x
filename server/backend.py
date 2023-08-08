@@ -1,5 +1,6 @@
 import re
 import time
+from database.chat_table import insert_chat_record
 import g4f
 import langid
 from g4f import ChatCompletion
@@ -14,6 +15,8 @@ import logging
 from server.logger import init_logger
 
 logger = init_logger("backend")
+
+
 class Backend_Api:
     def __init__(self, bp, config: dict) -> None:
         """
@@ -42,11 +45,12 @@ class Backend_Api:
 
         while retries < max_retries:
             try:
+                action = request.json['action']
                 jailbreak = request.json['jailbreak']
                 model = request.json['model']
                 messages = build_messages(jailbreak)
 
-                logger.info('_conversation id %s',conversation_id)
+                logger.info('_conversation id %s', conversation_id)
                 # Generate response
                 response = ChatCompletion.create(
                     model=model,
@@ -56,7 +60,17 @@ class Backend_Api:
                     auth=False
                 )
                 stream_ret = generate_stream(response, jailbreak)
-                return Response(stream_with_context(stream_ret), mimetype='text/event-stream')
+                r = Response(stream_with_context(stream_ret),
+                             mimetype='text/event-stream')
+                r.headers['conversation_id'] = 'Custom Value'
+                if(r.status_code == 200):
+                    userId = request.json['meta']['id']
+                    content_type = request.json['meta']['content']['content_type']
+                    internet_access = request.json['meta']['content']['internet_access']
+                    insert_chat_record(userId, model, conversation_id, action,
+                                       jailbreak, content_type, internet_access, messages[-1]['role'], messages[-1]['content'], r.data)
+
+                return r
 
             except Exception as e:
                 logger.error(e)

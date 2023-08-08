@@ -32,6 +32,7 @@ def _create_completion(model: str, messages: list, stream: bool, temperature: fl
 
     chatId = kwargs.get('chatId')
     conversation_id = conversations.get(chatId,'')
+    kwargs['conversationId'] = conversation_id
 
     headers = {
         'Content-Type': 'application/json',
