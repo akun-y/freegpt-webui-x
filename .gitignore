@@ -158,3 +158,4 @@ cython_debug/
 
 config*.json
 config.json
+user_database.db

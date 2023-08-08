@@ -29,7 +29,7 @@ apikey = config['dify_ai_apikey']
 conversations = {}
 def _create_completion(model: str, messages: list, stream: bool, temperature: float = 0.7, **kwargs):
     global logger,apikey,conversations
-    
+
     chatId = kwargs.get('chatId')
     conversation_id = conversations.get(chatId,'')
 
@@ -44,6 +44,13 @@ def _create_completion(model: str, messages: list, stream: bool, temperature: fl
         "user": chatId,
         "conversation_id": conversation_id
     }
+    #如果是检测请求,则直接返回
+    msg = messages[-1]
+    logger.info(f'dify-ai msg: {msg}')
+    if msg['content'] == '你好':
+        yield '你好，我是iKnowM。我今天能怎样帮助你？'
+        return
+
     response = requests.post(url + '/v1/chat-messages', headers=headers,
                              json=data, stream=True)
     if not response.ok:
