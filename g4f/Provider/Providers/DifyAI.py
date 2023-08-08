@@ -81,8 +81,10 @@ def _create_completion(model: str, messages: list, stream: bool, temperature: fl
                 # print(answer)
                 resps.append(answer)
                 yield answer
-            except:
-                print('error')
+            except Exception as e:
+                # 捕获异常并打印错误信息
+                print("发生异常:", str(e))
+                logger.error("dify-ai error===>", str(e), exc_info=True)
 
                 # yield line
     logger.info(f'dify-ai resp:{resps}')

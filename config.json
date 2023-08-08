@@ -7,6 +7,10 @@
 		"model_name": "orca-mini-7b.ggmlv3.q4_0",
 		"model_path": "M:/dev/AI/GPT4All-models"
 	},
+	"weixin":{
+		"appid": "wxf795e8204955e3db",
+		"secret":"98fa08ec5810ca9a519a0f40b255e6c2"
+	},
 	"logs_path":"./logs/",
 	"debug": false,
 	"url_prefix": "",

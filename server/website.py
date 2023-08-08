@@ -1,9 +1,11 @@
 import json
-from flask import render_template, redirect, url_for
+from flask import jsonify, render_template, redirect, request, url_for
 from time import time
 from os import urandom
 
+import requests
 
+config = json.load(open('config.json', 'r'))
 class Website:
     def __init__(self, bp, url_prefix) -> None:
         self.bp = bp
@@ -24,6 +26,10 @@ class Website:
             '/user/model/<user_id>': {
                 'function': self._model_info,
                 'methods': ['GET', 'POST']
+            },
+            '/user/wx/login': {
+                'function': self._wx_login,
+                'methods': ['POST']
             }
         }
 
@@ -63,3 +69,17 @@ class Website:
         res_json = json.dumps(data)
 
         return res_json
+    def _wx_login(self):
+        code = request.json.get('code')
+        if code:
+            wx = config['weixin']
+            appid = wx['appid']
+            secret = wx['secret']
+            # 向微信服务器请求获取 openid 和 session_key
+            response = requests.get(f'https://api.weixin.qq.com/sns/jscode2session?appid={appid}&secret={secret}&js_code={code}&grant_type=authorization_code')
+            data = response.json()
+            openid = data.get('openid')
+
+            return jsonify({'openid': openid})
+        else:
+            return jsonify({'error': 'Invalid request'})
