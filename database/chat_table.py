@@ -1,9 +1,9 @@
 import sqlite3
 
-
+db_name = 'db/chat_records.db'
 def create_chat_table():
     # Connect to the SQLite database
-    conn = sqlite3.connect('chat_records.db')
+    conn = sqlite3.connect(db_name)
 
     # Create the chat_records table if it doesn't exist
     with conn:
@@ -27,7 +27,7 @@ def create_chat_table():
 
 def insert_chat_record(userid: str, model: str, conversation_id: str, action: str, jailbreak: str, content_type: str, internet_access: bool, role, content, response: str):
     # Connect to the SQLite database
-    conn = sqlite3.connect('chat_records.db')
+    conn = sqlite3.connect(db_name)
 
     # Insert the chat record into the chat_records table
     with conn:
@@ -40,7 +40,7 @@ def insert_chat_record(userid: str, model: str, conversation_id: str, action: st
 
 def retrieve_chat_records():
     # Connect to the SQLite database
-    conn = sqlite3.connect('chat_records.db')
+    conn = sqlite3.connect(db_name)
 
     # Retrieve all chat records from the chat_records table
     with conn:

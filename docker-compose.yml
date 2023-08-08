@@ -14,3 +14,4 @@ services:
       - ../GPT4All-models:/app/gpt4all
       #- ./gpt4all:/app/gpt4all
       - ./config.json:/app/config.json
+      - ./db:/app/db

@@ -1,4 +1,5 @@
 from server.bp import bp
+from server.config import get_config
 from server.website import Website
 from server.backend import Backend_Api
 from json import load
@@ -7,9 +8,8 @@ from flask import Flask
 if __name__ == '__main__':
 
     # Load configuration from config.json
-    config = load(open('config.json', 'r'))
-    site_config = config['site_config']
-    url_prefix = config.pop('url_prefix')
+    site_config = get_config('site_config')
+    url_prefix = get_config('url_prefix')
 
     # Set up the website routes
     site = Website(bp, url_prefix)
@@ -21,7 +21,7 @@ if __name__ == '__main__':
         )
 
     # Set up the backend API routes
-    backend_api = Backend_Api(bp, config)
+    backend_api = Backend_Api(bp, site_config)
     for route in backend_api.routes:
         bp.add_url_rule(
             route,
@@ -35,7 +35,7 @@ if __name__ == '__main__':
 
     # Run the Flask server
     print(f"Running on {site_config['port']}{url_prefix}")
-    if(config['debug']):
+    if(get_config('debug')):
         app.run(**site_config)
     else :
         from waitress import serve

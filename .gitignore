@@ -161,3 +161,4 @@ config.json
 user_database.db
 chat_records.db
 *.db
+db/

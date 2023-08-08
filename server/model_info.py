@@ -4,13 +4,17 @@ import json
 from flask import jsonify
 
 from database.database import UserDatabase
+from server.config import get_config
 
 
 def get_model_info(self, userId):
     db = UserDatabase()
     choice = db.get_choice(userId)
 
-    res_json = json.dumps(choice)
+    if choice:
+        res_json = json.loads(choice)
+    else:
+        res_json = get_config('models')
     print(f"用户{userId}的models:", res_json)
 
     return res_json

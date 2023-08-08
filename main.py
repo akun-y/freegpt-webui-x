@@ -1,4 +1,5 @@
 from server.bp import bp
+from server.config import get_config
 from server.website import Website
 from server.backend import Backend_Api
 from json import load
@@ -7,9 +8,9 @@ from flask import Flask
 def app(environ, start_response):
     print("start...")
     # Load configuration from config.json
-    config = load(open('config.json', 'r'))
-    site_config = config['site_config']
-    url_prefix = config.pop('url_prefix')
+    
+    site_config = get_config.get('site_config')
+    url_prefix = get_config.get('url_prefix')
 
     # Set up the website routes
     site = Website(bp, url_prefix)

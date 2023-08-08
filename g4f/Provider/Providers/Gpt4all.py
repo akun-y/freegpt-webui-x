@@ -7,6 +7,7 @@ import os
 import json
 import requests
 import gpt4all
+from server.config import get_config
 
 from server.logger import init_logger
 from ...typing import sha256, Dict, get_type_hints
@@ -29,10 +30,9 @@ models = {
 # gpt4all
 
 logger = init_logger('gpt4all')
-config = json.load(open('config.json', 'r'))
-model_name = config['gpt4all'].get('model_name')
-model_path = config['gpt4all'].get('model_path')
-debug = config['debug']
+model_name = get_config('gpt4all').get('model_name')
+model_path = get_config('gpt4all').get('model_path')
+debug = get_config('debug')
 
 print("gpt4all version:")
 print(dir(gpt4all))

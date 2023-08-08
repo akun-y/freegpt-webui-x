@@ -2,6 +2,8 @@ import logging
 import requests
 import os
 import json
+
+from server.config import get_config
 from ...typing import sha256, Dict, get_type_hints
 
 url = 'https://gpt4.xunika.uk/'
@@ -11,8 +13,8 @@ needs_auth = False
 
 
 def _create_completion(model: str, messages: list, stream: bool, temperature: float = 0.7, **kwargs):
-    config = json.load(open('config.json', 'r'))
-    password = config['gravityengine_password']
+
+    password = get_config('gravityengine_password')
 
     headers = {
         'Content-Type': 'application/json',

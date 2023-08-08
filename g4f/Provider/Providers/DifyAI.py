@@ -3,6 +3,7 @@ import requests
 import os
 import json
 from g4f.utils import Utils
+from server.config import get_config
 
 from server.logger import init_logger
 from ...typing import sha256, Dict, get_type_hints
@@ -24,15 +25,14 @@ needs_auth = False
 logger = init_logger('dify-ai')
 
 
-config = json.load(open('config.json', 'r'))
-apikey = config['dify_ai_apikey']
+
+apikey = get_config('dify_ai_apikey')
 conversations = {}
 def _create_completion(model: str, messages: list, stream: bool, temperature: float = 0.7, **kwargs):
     global logger,apikey,conversations
 
     chatId = kwargs.get('chatId')
     conversation_id = conversations.get(chatId,'')
-    kwargs['conversationId'] = conversation_id
 
     headers = {
         'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ def _create_completion(model: str, messages: list, stream: bool, temperature: fl
 
                 resp = json.loads(data_string)
                 answer = resp.get('answer')
-                conversation_id = resp.get('conversation_id')
+                conversation_id = resp.get('conversation_id','')
                 conversations[chatId] = str(conversation_id)
 
                 # 'event':'message'

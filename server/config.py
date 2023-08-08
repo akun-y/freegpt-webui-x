@@ -29,7 +29,7 @@ special_instructions = {
 
 def read_config(config_file_path):
     try:
-        with open(config_file_path, 'r') as f:
+        with open(config_file_path, 'r',encoding='utf-8') as f:
             config_data = json.load(f)
             return config_data
     except FileNotFoundError:

@@ -8,8 +8,6 @@ import requests
 from server.model_info import get_model_info, post_model_info
 from server.weixin import wx_login
 
-config = json.load(open('config.json', 'r'))
-
 
 class Website:
     def __init__(self, bp, url_prefix) -> None:

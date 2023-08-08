@@ -1,29 +1,13 @@
 import sqlite3
 import string
-models_init = [
-    {
-        'name': 'GPT4All-J v1.3-groovy',
-        'value': "gpt4all",
-        'select': False,
-        'content': '创意模型可用于商业用途;快速响应;创意回应;基于指令;由 Nomic AI. 培训;'
-    },
-    {
-        'name': 'gpt-3.5-turbo-16k-0613',
-        'select': False,
-        'value': "gpt-3.5-turbo-16k-0613",
-        'content': '-GPT3.5 Turbo,Training data as of September 2021'
-    },
-    {
-        'name': 'dify.ai',
-        'select': True,
-        'value': "dify-ai",
-        'content': '-GPT3.5 Turbo,Training data as of September 2021'
-    },
-]
+
+from server.config import get_config
 
 
+models_init = get_config("models",{})
+db_name = 'db/user_database.db'
 class UserDatabase:
-    def __init__(self, db_name='user_database.db'):
+    def __init__(self, db_name=db_name):
         self.db_name = db_name
 
     def _connect(self):
