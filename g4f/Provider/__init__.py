@@ -29,6 +29,7 @@ from .Providers import (
     Xiaor,
     Yqcloud,
     You,
+    BaiduWenxin
 )
 
 Palm = Bard

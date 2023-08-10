@@ -58,6 +58,7 @@ def _create_completion(model: str, messages: list, stream: bool, temperature: fl
         error_msg = "response is empty"
         logger.info(
             f'dify-ai error: {response.status_code} - {response.reason} - {response.text}')
+        yield 'error'
 
     resps = ['dify-ay::']
     if response.status_code == 200:
@@ -95,7 +96,8 @@ def _create_completion(model: str, messages: list, stream: bool, temperature: fl
                 logger.error("dify-ai error===>", str(e), exc_info=True)
 
                 # yield line
-    logger.info(f'dify-ai resp:{resps}')
+    respStr = ''.join(resps)
+    logger.info(f'dify-ai resp:{respStr}')
 
 
 params = f'g4f.Providers.{os.path.basename(__file__)[:-3]} supports: ' + \

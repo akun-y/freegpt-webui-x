@@ -194,7 +194,10 @@ class Model:
         name: str = 'dify-ai'
         base_provider: str = 'huggingface'
         best_provider: Provider.Provider = Provider.DifyAI
-
+    class baidu_wenxin:
+        name: str = 'baidu-wenxin'
+        base_provider: str = 'huggingface'
+        best_provider: Provider.Provider = Provider.BaiduWenxin
 class ModelUtils:
     convert: dict = {
         'gpt-3.5-turbo': Model.gpt_35_turbo,
@@ -250,4 +253,5 @@ class ModelUtils:
         'gpt4all-7b': Model.gpt4all_7b,
         
         'dify-ai': Model.dify_ai,
+        'baidu-wenxin': Model.baidu_wenxin,
     }

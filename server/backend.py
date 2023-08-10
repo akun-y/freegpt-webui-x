@@ -100,7 +100,7 @@ def build_messages(jailbreak):
     # Generate system message
     current_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     system_message = (
-        f'You are iKnowGPT also known as iKnowGPT, a large language model trained by AI. '
+        f'You are iKnowM, a large language model trained by AI. '
         f'Strictly follow the users instructions. '
         f'Knowledge cutoff: 2021-09-01 Current date: {current_date}. '
         f'{set_response_language(prompt)}'
@@ -124,7 +124,7 @@ def build_messages(jailbreak):
     conversation += [prompt]
 
     # Reduce conversation size to avoid API Token quantity error
-    conversation = conversation[-4:] if len(conversation) > 3 else conversation
+    conversation = conversation[-5:] if len(conversation) > 4 else conversation
 
     return conversation
 
