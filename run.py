@@ -1,5 +1,6 @@
 from server.bp import bp
 from server.config import get_config
+from server.services import Services_Api
 from server.website import Website
 from server.backend import Backend_Api
 from json import load
@@ -28,7 +29,15 @@ if __name__ == '__main__':
             view_func=backend_api.routes[route]['function'],
             methods=backend_api.routes[route]['methods'],
         )
-
+    # Set up the services API routes
+    services_api = Services_Api(bp, site_config)
+    for route in services_api.routes:
+        bp.add_url_rule(
+            route,
+            view_func=services_api.routes[route]['function'],
+            methods=services_api.routes[route]['methods'],
+        )
+        
     # Create the app and register the blueprint
     app = Flask(__name__)
     app.register_blueprint(bp, url_prefix=url_prefix)

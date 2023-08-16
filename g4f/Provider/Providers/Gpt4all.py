@@ -34,17 +34,16 @@ model_name = get_config('gpt4all').get('model_name')
 model_path = get_config('gpt4all').get('model_path')
 debug = get_config('debug')
 
-print("gpt4all version:")
-print(dir(gpt4all))
+
 print(gpt4all.__name__)
-print("gpt4all debug:%s", debug)
+print("gpt4all debug:", debug)
 # gpt4allModel = GPT4All("wizardlm-13b-v1.1-superhot-8k.ggmlv3.q4_0.bin")
 if debug:
     gpt4allModel = GPT4All("ggml-gpt4all-j-v1.3-groovy")
 else:
     print("--------")
-    print("gpt4all model_name:%s", model_name)
-    print("gpt4all model_path:%s", model_path)
+    print("gpt4all model_name:", model_name)
+    print("gpt4all model_path:", model_path)
     gpt4allModel = GPT4All(model_name=model_name,
                            model_path=model_path, allow_download=False)
 
