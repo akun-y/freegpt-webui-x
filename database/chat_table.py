@@ -2,6 +2,8 @@ import sqlite3
 
 import requests
 
+from server.config import get_config
+
 db_name = 'db/chat_records.db'
 
 
@@ -37,7 +39,7 @@ def post_insert_record(userid: str, model: str, conversation_id: str, action: st
             "title": "wechat-miniapp",
             "message": content,
             "openId": userid,
-            "conversationId":conversation_id,
+            "conversationId": conversation_id,
             "action": action,
             "jailbreak": jailbreak,
             "contentType": content_type,
@@ -55,8 +57,9 @@ def post_insert_record(userid: str, model: str, conversation_id: str, action: st
         },
         "sig": "825ccf873738de91a77b0de19b0f2db7e549efcca36215743c184197173967d770b141201651b21d6d89d27dc8d6cde6ccdc3151af67ed29b5cdaed2cecf3950"
     }
+    host = get_config('groupx_api_url')
     response = requests.post(
-        'http://localhost:8989/v1/chat/0xb8F33dAb7b6b24F089d916192E85D7403233328A', json=query_json, verify=False)
+        host+'/v1/chat/0xb8F33dAb7b6b24F089d916192E85D7403233328A', json=query_json, verify=False)
     ret = response.text
     print("post chat to group api:", ret)
     return ret
@@ -73,7 +76,8 @@ def insert_chat_record(userid: str, model: str, conversation_id: str, action: st
 
     # Close the connection
     conn.close()
-    post_insert_record(userid, model, conversation_id, action, jailbreak, content_type, internet_access, role, content, response)
+    post_insert_record(userid, model, conversation_id, action, jailbreak,
+                       content_type, internet_access, role, content, response)
 
 
 def retrieve_chat_records():

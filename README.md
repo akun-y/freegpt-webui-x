@@ -158,7 +158,7 @@ docker stop <container-id>
 
 ## Docker build
 
-1. docker build -t yinghk/freegpt-webui-x:v0.1.2 -t yinghk/freegpt-webui-x:latest .
+1. docker build -t yinghk/freegpt-webui-x:v0.1.3 -t yinghk/freegpt-webui-x:latest .
 2. docker login
 3. docker push yinghk/freegpt-webui-x
 
